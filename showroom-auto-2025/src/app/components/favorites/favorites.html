@@ -1,0 +1,32 @@
+<div class="favorites-container">
+  <h3 class="favorites-title">❤️ My Favorite Cars</h3>
+  
+  @if(favoriteAutos.length > 0) {
+    <div class="favorites-list">
+      @for(auto of favoriteAutos; track auto.id) {
+        <div class="favorite-card">
+          <div class="favorite-card-image">
+            <img [src]="auto.photo" alt="{{ auto.brand }} {{ auto.model }}" />
+          </div>
+          <div class="favorite-card-content">
+            <h5>{{ auto.brand }} {{ auto.model }}</h5>
+            <p class="price">{{ auto.price | currency:'TND' }}</p>
+            <p class="availability">
+              <span class="badge" [ngClass]="auto.availability > 0 ? 'badge-success' : 'badge-danger'">
+                {{ auto.availability > 0 ? auto.availability + ' available' : 'Out of stock' }}
+              </span>
+            </p>
+            <div class="favorite-actions">
+              <button class="btn btn-sm btn-primary" (click)="selectAuto(auto)">View Details</button>
+              <button class="btn btn-sm btn-danger" (click)="removeFavorite(auto.id)">❌ Remove</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="empty-favorites">
+      <p>No favorite cars yet. Start adding your favorite vehicles!</p>
+    </div>
+  }
+</div>

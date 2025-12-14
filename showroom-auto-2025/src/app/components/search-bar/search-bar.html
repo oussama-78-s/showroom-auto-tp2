@@ -1,0 +1,63 @@
+<div class="container-fluid header">
+<div class="input-group input-group-lg">
+  <span class="input-group-text">Brand</span>
+  <input (input)="selectAutoList(brand.value)" #brand type="text" class="form-control" placeholder="e.g. Audi">
+  <button (click)="selectAutoList(brand.value)" class="btn btn-success">Search</button>
+  <button (click)="toggleFavorites()" class="btn btn-danger favorites-btn">
+    ❤️ Favorites <span class="badge">{{ favoritesCount }}</span>
+  </button>
+  <button (click)="toggleFilters()" class="btn btn-secondary filters-btn">🔍 Filters</button>
+</div>
+</div>
+
+@if(showFilters) {
+  <div class="container filters-panel">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">Min Price</label>
+        <input type="number" class="form-control" [(ngModel)]="minPrice" (input)="applyFilters()" placeholder="e.g. 150" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Max Price</label>
+        <input type="number" class="form-control" [(ngModel)]="maxPrice" (input)="applyFilters()" placeholder="e.g. 400" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Min Power</label>
+        <input type="number" class="form-control" [(ngModel)]="minPower" (input)="applyFilters()" placeholder="e.g. 10" />
+      </div>
+      <div class="col-md-3 d-flex align-items-end">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="inStockOnly" [(ngModel)]="inStockOnly" (change)="applyFilters()" />
+          <label class="form-check-label" for="inStockOnly">In stock only</label>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="container auto-container">
+  @for(auto of selectedAutos; track auto.id; let indice=$index; let even=$even; let odd=$odd) {
+    <div class="card" style="width: 18rem;">
+      <img [src]="auto.photo" class="card-img-top" />
+      <div class="card-body" [ngClass]="{'card-body-odd':odd,'card-body-even':even}">
+        <div class="card-header-flex">
+          <h5 class="card-title" [ngStyle]="autoTitleStyle(auto)"> {{indice}} {{auto.brand}} - {{auto.model}}</h5>
+          <button 
+            class="btn btn-sm favorite-btn" 
+            [ngClass]="isFavorite(auto.id) ? 'favorite-active' : 'favorite-inactive'"
+            (click)="addFavorite(auto)"
+            [title]="isFavorite(auto.id) ? 'Remove from favorites' : 'Add to favorites'">
+            ❤️
+          </button>
+        </div>
+        <p class="card-text">Power : {{auto.power}}</p>
+        <p class="card-text">Price : {{auto.price|currency:'TND'}}</p>
+        <p class="card-text">Only {{auto.availability}} units available</p>
+        <button class="btn btn-primary" (click)="showDetails(auto)">More details</button>
+      </div>
+    </div>
+}
+@empty {
+  <p>No cars found!</p>
+}
+   </div> 

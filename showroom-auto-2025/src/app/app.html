@@ -1,0 +1,45 @@
+<app-head-bar></app-head-bar>
+<app-search-bar 
+  [autos]="autoList" 
+  [favoriteAutos]="favoriteAutos"
+  [favoritesCount]="favoriteAutos.length"
+  (onSelectAuto)="selectAuto($event)"
+  (onAddFavorite)="addFavorite($event)"
+  (onToggleFavorites)="toggleFavoritesModal()">
+</app-search-bar>
+
+@if(selectedAuto){
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <img [src]="selectedAuto.photo" />
+            </div>
+            <div class="col-4">
+                <h4>{{selectedAuto.brand}} {{selectedAuto.model}}</h4>
+                <p>
+                    {{selectedAuto.description}}
+                </p>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Favorites Modal -->
+@if(showFavoritesModal) {
+  <div class="favorites-modal-overlay" (click)="closeFavoritesModal()">
+    <div class="favorites-modal-content" (click)="$event.stopPropagation()">
+      <div class="favorites-modal-header">
+        <h2>❤️ My Favorite Cars</h2>
+        <button class="close-btn" (click)="closeFavoritesModal()">✕</button>
+      </div>
+      <app-favorites 
+        [favoriteAutos]="favoriteAutos"
+        (onRemoveFavorite)="removeFavorite($event)"
+        (onSelectAuto)="selectAuto($event)">
+      </app-favorites>
+    </div>
+  </div>
+}
+
+<app-footer></app-footer>
+
